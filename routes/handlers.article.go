@@ -1,6 +1,9 @@
 package routes
 
 import (
+	"net/http"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/hellonathapon/restful-gin/models"
 	"github.com/hellonathapon/restful-gin/utils"
@@ -13,4 +16,21 @@ func HandleIndexRoute(c *gin.Context) {
 		"title": "Articles",
 		"payload": articles,
 	}, "index.html")
+}
+
+func HandleGetArticleByID(c *gin.Context) {
+	//* Check if the article ID from client is valid
+	//* by converting it from string to int
+	if articleID, err := strconv.Atoi(c.Param("article_id")); err == nil {
+		if article, err := models.GetArticleByID(articleID); err == nil {
+			utils.Render(c, gin.H{
+				"title": article.Title,
+				"payload": article,
+			}, "article.html")
+		}else {
+			c.AbortWithError(http.StatusNotFound, err)
+		}
+	}else {
+		c.AbortWithError(http.StatusNotFound, err)
+	}
 }

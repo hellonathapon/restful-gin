@@ -6,4 +6,6 @@ import (
 
 func initializeRoutes() {
 	router.GET("/", routes.HandleIndexRoute)
+
+	router.GET("/article/view/:article_id", routes.HandleGetArticleByID)
 }
