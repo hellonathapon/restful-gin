@@ -7,6 +7,7 @@ import (
 )
 
 func Render(c *gin.Context, data gin.H, templateName string) {
+
 	// check for accepted format and return respectively
 	switch c.Request.Header.Get("Accept") {
 	case "application/json":

@@ -1,4 +1,4 @@
-package routes
+package controllers
 
 import (
 	"net/http"
@@ -9,7 +9,7 @@ import (
 	"github.com/hellonathapon/restful-gin/utils"
 )
 
-func HandleIndexRoute(c *gin.Context) {
+func GetIndex(c *gin.Context) {
 	articles := models.GetAllArticles()
 
 	utils.Render(c, gin.H{
@@ -18,7 +18,7 @@ func HandleIndexRoute(c *gin.Context) {
 	}, "index.html")
 }
 
-func HandleGetArticleByID(c *gin.Context) {
+func GetArticleByID(c *gin.Context) {
 	//* Check if the article ID from client is valid
 	//* by converting it from string to int
 	if articleID, err := strconv.Atoi(c.Param("article_id")); err == nil {

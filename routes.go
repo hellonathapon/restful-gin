@@ -1,11 +1,14 @@
 package main
 
 import (
-	"github.com/hellonathapon/restful-gin/routes"
+	"github.com/hellonathapon/restful-gin/controllers"
 )
 
+// parse and mapping routes
 func initializeRoutes() {
-	router.GET("/", routes.HandleIndexRoute)
+	router.GET("/", controllers.GetIndex)
 
-	router.GET("/article/view/:article_id", routes.HandleGetArticleByID)
+	router.GET("/user", controllers.GetUsers)
+
+	router.GET("/article/view/:article_id", controllers.GetArticleByID)
 }
