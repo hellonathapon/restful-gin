@@ -49,5 +49,50 @@ func CreateUser(c *gin.Context) {
 }
 
 func UpdateUser(c *gin.Context) {
-	//* check if claim ID exists in DB
+	var user models.User
+
+	//* 1. bind user credentials to user model
+	//* 2. use Update function to update the entire row
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Create a user object
+	var value models.User
+
+	if err := models.DB.Where("ID = ?", c.Param("user_id")).First(&value).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
+		return
+	}
+	
+	value.Username = user.Username
+	value.Email = user.Email
+	value.Password = user.Password
+
+	result := models.DB.Save(&value)
+
+
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+	}else {
+		c.JSON(http.StatusOK, gin.H{"message": "Successfully updated"})
+	}
+}
+
+func DeleteUser(c *gin.Context) {
+	var user models.User
+	
+	if err := models.DB.Where("ID = ?", c.Param("user_id")).First(&user).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "User with this ID not found"})
+		return
+	}
+
+	result := models.DB.Delete(&user)
+
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Bad Request"})
+	}else {
+		c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted"})
+	}
 }
