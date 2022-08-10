@@ -11,7 +11,7 @@ var router *gin.Engine
 func main() {
 	router = gin.Default()
 
-	// db connection
+	// db pooling connection
 	models.DbConn()
 
 	// load HTML templates

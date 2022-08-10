@@ -8,7 +8,9 @@ import (
 func initializeRoutes() {
 	router.GET("/", controllers.GetIndex)
 
-	router.GET("/user", controllers.GetUsers)
+	router.GET("/users", controllers.GetUsers)
+	router.GET("/user/:user_id", controllers.GetUserByID)
+	router.POST("/user", controllers.CreateUser)
 
 	router.GET("/article/view/:article_id", controllers.GetArticleByID)
 }
