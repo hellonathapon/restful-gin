@@ -34,3 +34,11 @@ func GetArticleByID(c *gin.Context) {
 		c.AbortWithError(http.StatusNotFound, err)
 	}
 }
+
+func TestJwt(c *gin.Context) {
+	token, err := utils.HashJwt()
+	if err != nil {
+		panic(err)
+	}
+	c.JSON(http.StatusOK, gin.H{"token": token})
+}

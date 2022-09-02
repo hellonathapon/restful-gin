@@ -9,9 +9,18 @@ import (
 )
 
 func GetUsers(c *gin.Context) {
-	var users []models.User
-	models.DB.Find(&users)
-
+	//* when make a connection to DB, there is no config specification what table should it uses
+	//* so here in ORM, by passing struct/object of target table to the DB, so it knows which table
+	//* to interact with.
+	var users []models.User // User is struct and by doing so var users has User struct type
+	err := models.DB.Find(&users).Error // pass model to find the result in corresponding table.
+	
+	if err != nil {
+		panic(err)
+	}
+	
+	//* we pass memory address of users defined above to make change to it, (get some data and store in it)
+	//* So here we can send that variable to the client
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }
 
